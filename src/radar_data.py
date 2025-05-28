@@ -5,6 +5,12 @@ from box import Box
 import os
 import truck_utility as tru
 
+# Per dividere i dati in train e test e classificarli tramite un classificatore random forest
+# https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.html
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
 dir_path = "/home/marco/Documents/TAV project/dataset/man-truckscenes/"
 trucksc = TruckScenes('v1.0-mini', dir_path, verbose=True)
 
@@ -56,14 +62,41 @@ labels = np.full(radar_unified_array.shape[0], False)
 boxes = []
 for ann_token in my_sample['anns']:
     ann_json = trucksc.get('sample_annotation',ann_token)
-    box = Box(ann_json['translation'],ann_json['size'],ann_json['rotation'])
+    box = Box(ann_json['translation'],ann_json['size'],ann_json['rotation'], ann_json['category_name'])
     boxes.append(box)
     for indx, p in enumerate(radar_unified_array):
         if not labels[indx] and box.contains(p[:3]):
             labels[indx] = True
             box.add_point(p)
 
+
+# Assegnazione dell'etichette e classificazione mediante random forest
+X = [] # Array delle features associate a ogni box
+Y = [] # Array delle etichette associate a ogni box 
 for b in boxes:
-    a = b.get_features_arr()
-    if a[0] > 1:
-        print(a)
+    X.append(b.get_features_arr())
+    Y.append(b.get_box_label())
+
+assert(len(X)==len(Y)) # Controllo se entrambi i vettori hanno la stessa lunghezza
+
+# Divisione in feature ed etichette per training e test
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.33, random_state=42)
+
+# numero alberi, lunghezza massima alberi, stato per avere riproducibilità
+clf = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42)
+clf.fit(X_train, y_train) # fit() ritorna uno stimatore adattato ai nostri dati di training
+
+# Finita la fase di trainig inizio fase di predizione
+y_pred = clf.predict(X_test)
+
+# Accuratezza: percentuale di predizioni corrette
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuratezza: {accuracy:.2f}")
+
+# Report dettagliato
+print("\nReport di classificazione:")
+print(classification_report(y_test, y_pred))
+
+# Matrice di confusione
+print("Matrice di confusione:")
+print(confusion_matrix(y_test, y_pred))
