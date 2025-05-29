@@ -142,3 +142,6 @@ class Box:
 
     def get_box_label(self):
         return self.label
+    
+    def get_num_point(self):
+        return len(self.points_arr)
