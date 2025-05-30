@@ -3,24 +3,6 @@ import radar_analyzer as rd
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 from collections import Counter
 
-# Etichette semantiche
-static_labels = {'traffic_cone', 'barrier', 'construction_cone', 'construction_barrel'}
-vehicle_labels = {'car', 'truck', 'bus', 'trailer', 'motorcycle'}
-vulnerable_labels = {'bicycle', 'pedestrian'}
-movable_labels = {'pushable_pullable'}
-
-def map_label_category(label):
-    if label in static_labels:
-        return 'static'
-    elif label in vehicle_labels:
-        return 'dynamic'
-    elif label in vulnerable_labels:
-        return 'vulnerable'
-    elif label in movable_labels:
-        return 'movable'
-    else:
-        return 'unknown'
-
 def main():
     dir_path = "/home/marco/Documents/TAV project/dataset/man-truckscenes/"
     trucksc = TruckScenes('v1.0-mini', dir_path, verbose=True)
@@ -34,6 +16,9 @@ def main():
 
     # Lista per riepilogo finale
     summary = []
+    # Liste aggregate per il test
+    all_y_test = []
+    all_y_pred = []
 
     for sc in range(len(trucksc.scene)):
         print(f"\n===== Scena {sc} =====")
@@ -54,26 +39,34 @@ def main():
         # Tempo di esecuzione
         print(f"Tempo analisi dati radar: {ex_time:.1f} s")
 
-        # Distribuzione categorie predette
-        predicted_categories = [map_label_category(label) for label in y_pred]
-        category_count = Counter(predicted_categories)
-        print("Distribuzione predizioni per categoria:")
-        for cat, count in category_count.items():
-            print(f"{cat}: {count}")
-
         # Report classificazione
         print("Report classificazione:")
         print(classification_report(y_test, y_pred, zero_division=0))
 
-    print("\n===== RIEPILOGO =====")
-    for entry in summary:
-        print(f"\nScena {entry['scene']} → Accuracy: {entry['accuracy']:.2f}, Tempo: {entry['execution_time']:.1f}s")
-        print("Matrice di confusione:")
-        for row in entry['confusion_matrix']:
-            print(row)
-        print("Distribuzione predizioni per categoria:")
-        for cat, count in entry['category_count'].items():
-            print(f"{cat}: {count}")
+        # Per statistiche aggregate    
+        all_y_test.extend(y_test)
+        all_y_pred.extend(y_pred)
+
+        print("\n===== RIEPILOGO =====")
+        for entry in summary:
+            print(f"\nScena {entry['scene']} → Accuracy: {entry['accuracy']:.2f}, Tempo: {entry['execution_time']:.1f}s")
+            print("Matrice di confusione:")
+            for row in entry['confusion_matrix']:
+                print(row)
+            print("Distribuzione predizioni per categoria:")
+            for cat, count in entry['category_count'].items():
+                print(f"{cat}: {count}")
+
+    print("\n===== STATISTICHE AGGREGATE =====")
+    global_accuracy = accuracy_score(all_y_test, all_y_pred)
+    global_cm = confusion_matrix(all_y_test, all_y_pred)
+    global_report = classification_report(all_y_test, all_y_pred, zero_division=0)
+
+    print(f"Accuratezza totale su tutte le scene: {global_accuracy:.2f}")
+    print("Matrice di confusione aggregata:")
+    print(global_cm)
+    print("Report classificazione aggregato:")
+    print(global_report)
 
 if __name__ == "__main__":
     main()

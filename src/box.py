@@ -63,48 +63,51 @@ class Box:
         return self.label
 
     def get_features_arr(self):
-        """Restituisce il vettore di feature"""
-        pts = self.get_num_point()
-        pts_dens = pts / self.volume if self.volume else 0
+        # Numero totale di punti radar dentro la bounding box
+        points_num = len(self.points_arr)
 
-        rcs = np.array(self.rcs_values, dtype=np.float32)
-        avg_rcs   = float(rcs.mean()) if pts else 0
-        sigma_rcs = float(rcs.std())  if pts else 0
+        # Densità dei punti (numero di punti per unità di volume)
+        points_dens = points_num / self.volume if self.volume > 0 else 0
 
-        vel = np.array(self.velocities, dtype=np.float32)
-        avg_vel_vec = vel.mean(axis=0) if pts else np.zeros(3, dtype=np.float32)
-        sigma_vel   = vel.std(axis=0)  if pts else np.zeros(3, dtype=np.float32)
+        # Valore medio del Radar Cross Section (RCS) dei punti
+        avg_rcs = np.mean(self.rcs_values) if self.rcs_values else 0
 
-        motion_flag = int(np.linalg.norm(avg_vel_vec) > MOTION_THRESHOLD)
-        vertical_pos = float(self.center[2])
+        # Deviazione standard del RCS (quanto varia la riflettività all'interno della box)
+        sigma_rcs = np.std(self.rcs_values) if self.rcs_values else 0
+
+        # Lista dei vettori velocità tridimensionali dei punti
+        velocities = np.array(self.velocities)
+
+        # Velocità media (vettoriale) dei punti all'interno della box
+        avg_speed_direction = np.mean(velocities, axis=0) if len(velocities) > 0 else np.zeros(3)
+
+        # Deviazione standard delle velocità (indica variabilità del movimento)
+        sigma_vel = np.std(velocities, axis=0) if len(velocities) > 0 else np.zeros(3)
+
+        # Flag binario che indica se l'oggetto si sta muovendo (modulo velocità media > soglia)
+        motion_flag = np.linalg.norm(avg_speed_direction) > MOTION_THRESHOLD
+
+        # Altezza assoluta del centro della box (utile per distinguere oggetti elevati o bassi)
+        vertical_pos = self.center[2]
+
+        # Feature aggiunte per migliorare distinzione tra categorie difficili:
+        # Altezza fisica della bounding box
+        height = self.size[2]
+
+        # Indicatore di staticità
+        percent_quasi_static = np.mean(np.linalg.norm(velocities, axis=1) < 0.02) if len(velocities) > 0 else 0
 
         return [
-            pts,
-            self.volume,
-            pts_dens,
-            avg_rcs,
-            sigma_rcs,
-            float(np.linalg.norm(avg_vel_vec)),
-            float(np.linalg.norm(sigma_vel)),
-            self.elongation_ratio,
-            motion_flag,
+            points_num,   
+            self.volume,    
+            points_dens,    
+            avg_rcs,        
+            sigma_rcs,      
+            np.linalg.norm(avg_speed_direction),  # Modulo velocità media
+            np.linalg.norm(sigma_vel),            # Variabilità velocità
+            self.elongation_ratio,       # Forma dell'oggetto (lungo/schiacciato)
+            int(motion_flag),
             vertical_pos,
+            height,                      # Dimensione verticale box
+            percent_quasi_static         # % punti quasi fermi
         ]
-
-    # FUNZIONE PER DEBUG
-    def get_features_json(self):
-        """Restituisce le feature in formato JSON (utile per debug/log)."""
-        features = {
-            "points_num"            : self.get_num_point(),
-            "volume"                : self.volume,
-            "points_density"        : self.get_num_point() / self.volume if self.volume else 0,
-            "avg_rcs"               : np.mean(self.rcs_values) if self.rcs_values else 0,
-            "sigma_rcs"             : np.std(self.rcs_values)  if self.rcs_values else 0,
-            "avg_speed_magnitude"   : float(np.linalg.norm(np.mean(self.velocities, axis=0))) if self.velocities else 0,
-            "sigma_speed_magnitude" : float(np.linalg.norm(np.std(self.velocities, axis=0)))  if self.velocities else 0,
-            "elongation_ratio"      : self.elongation_ratio,
-            "motion_flag"           : bool(np.linalg.norm(np.mean(self.velocities, axis=0)) > MOTION_THRESHOLD) if self.velocities else False,
-            "vertical_position"     : float(self.center[2]),
-            "label"                 : self.label,
-        }
-        return json.dumps(features, indent=2)

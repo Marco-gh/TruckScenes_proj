@@ -112,8 +112,8 @@ def train_radar_classifier(trucksc, first_sample_token, dir_path, test_size_par:
 
     assert len(X_train) == len(y_train)
 
-    # numero alberi, lunghezza massima alberi, stato per avere riproducibilità
-    clf = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42)
+    # numero alberi, lunghezza massima alberi, stato per avere riproducibilità, class_weight pesa le classi in base alla loro frequenza
+    clf = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42, class_weight="balanced")
     clf.fit(X_train, y_train)  # fit() ritorna uno stimatore adattato ai nostri dati di training
 
     end_time = time()
