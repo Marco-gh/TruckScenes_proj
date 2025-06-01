@@ -1,0 +1,486 @@
+======
+Loading truckscenes tables for version v1.0-mini...
+11 attribute,
+18 calibrated_sensor,
+27 category,
+20090 ego_motion_cabin,
+20089 ego_motion_chassis,
+20116 ego_pose,
+1094 instance,
+400 sample,
+25750 sample_annotation,
+43556 sample_data,
+10 scene,
+18 sensor,
+4 visibility,
+Done loading in 0.320 seconds.
+======
+Reverse indexing ...
+Done reverse indexing in 0.1 seconds.
+======
+
+--- ALLENAMENTO CLASSIFICATORI ---
+Frame usati per il training (radar): 36
+Training completato in 0.7635445594787598 s
+Frame usati per il training (lidar): 36
+Training completato in 83.74262261390686 s
+
+============== SCENE 0 ==============
+
+Evaluating RADAR on scene 0…
+Frame di test (radar): 38
+
+----- RADAR RESULTS -----
+Accuracy: 0.97
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       1.00      0.97      0.98       855
+  vulnerable       0.66      1.00      0.80        53
+
+    accuracy                           0.97       908
+   macro avg       0.83      0.98      0.89       908
+weighted avg       0.98      0.97      0.97       908
+
+
+Evaluating LIDAR on scene 0…
+Frame di test (lidar): 38
+
+----- LIDAR RESULTS -----
+Accuracy: 0.99
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       1.00      1.00      1.00      1032
+     movable       0.00      0.00      0.00        14
+  vulnerable       0.89      1.00      0.94       109
+
+    accuracy                           0.99      1155
+   macro avg       0.63      0.67      0.65      1155
+weighted avg       0.98      0.99      0.98      1155
+
+
+============== SCENE 1 ==============
+
+Evaluating RADAR on scene 1…
+Frame di test (radar): 38
+
+----- RADAR RESULTS -----
+Accuracy: 0.81
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       0.87      0.97      0.92       289
+      static       1.00      0.02      0.03        58
+  vulnerable       0.00      0.00      0.00         0
+
+    accuracy                           0.81       347
+   macro avg       0.62      0.33      0.32       347
+weighted avg       0.90      0.81      0.77       347
+
+
+Evaluating LIDAR on scene 1…
+Frame di test (lidar): 38
+
+----- LIDAR RESULTS -----
+Accuracy: 0.72
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       0.79      1.00      0.88       485
+      static       1.00      0.21      0.35       260
+  vulnerable       0.00      0.00      0.00         0
+
+    accuracy                           0.72       745
+   macro avg       0.60      0.40      0.41       745
+weighted avg       0.86      0.72      0.70       745
+
+
+============== SCENE 2 ==============
+
+Evaluating RADAR on scene 2…
+Frame di test (radar): 38
+
+----- RADAR RESULTS -----
+Accuracy: 0.70
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       0.87      0.95      0.91       542
+      static       1.00      0.00      0.01       257
+  vulnerable       0.40      1.00      0.57       134
+
+    accuracy                           0.70       933
+   macro avg       0.75      0.65      0.49       933
+weighted avg       0.84      0.70      0.61       933
+
+
+Evaluating LIDAR on scene 2…
+Frame di test (lidar): 38
+
+----- LIDAR RESULTS -----
+Accuracy: 0.89
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       0.94      0.98      0.96      1485
+      static       1.00      0.78      0.88      1472
+  vulnerable       0.59      1.00      0.74       379
+
+    accuracy                           0.89      3336
+   macro avg       0.84      0.92      0.86      3336
+weighted avg       0.93      0.89      0.90      3336
+
+
+============== SCENE 3 ==============
+
+Evaluating RADAR on scene 3…
+Frame di test (radar): 38
+
+----- RADAR RESULTS -----
+Accuracy: 0.91
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       0.95      0.99      0.97       550
+      static       0.00      0.00      0.00        44
+  vulnerable       0.00      0.00      0.00         0
+
+    accuracy                           0.91       594
+   macro avg       0.32      0.33      0.32       594
+weighted avg       0.88      0.91      0.89       594
+
+
+Evaluating LIDAR on scene 3…
+Frame di test (lidar): 38
+
+----- LIDAR RESULTS -----
+Accuracy: 0.84
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       0.92      1.00      0.96       743
+     movable       0.00      0.00      0.00        16
+      static       1.00      0.08      0.15       143
+  vulnerable       0.00      0.00      0.00         0
+
+    accuracy                           0.84       902
+   macro avg       0.48      0.27      0.28       902
+weighted avg       0.92      0.84      0.81       902
+
+
+============== SCENE 4 ==============
+
+Evaluating RADAR on scene 4…
+Frame di test (radar): 38
+
+----- RADAR RESULTS -----
+Accuracy: 0.84
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       0.95      0.99      0.97       856
+     movable       0.00      0.00      0.00        51
+      static       1.00      0.01      0.02        97
+  vulnerable       0.04      1.00      0.08         5
+
+    accuracy                           0.84      1009
+   macro avg       0.50      0.50      0.27      1009
+weighted avg       0.91      0.84      0.82      1009
+
+
+Evaluating LIDAR on scene 4…
+Frame di test (lidar): 38
+
+----- LIDAR RESULTS -----
+Accuracy: 0.66
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       0.91      1.00      0.95      1191
+     movable       0.00      0.00      0.00       480
+      static       1.00      0.44      0.61       438
+  vulnerable       0.02      1.00      0.04        12
+
+    accuracy                           0.66      2121
+   macro avg       0.48      0.61      0.40      2121
+weighted avg       0.72      0.66      0.66      2121
+
+
+============== SCENE 5 ==============
+
+Evaluating RADAR on scene 5…
+Frame di test (radar): 38
+
+----- RADAR RESULTS -----
+Accuracy: 1.00
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       1.00      1.00      1.00       283
+      static       1.00      1.00      1.00         1
+  vulnerable       1.00      1.00      1.00        37
+
+    accuracy                           1.00       321
+   macro avg       1.00      1.00      1.00       321
+weighted avg       1.00      1.00      1.00       321
+
+
+Evaluating LIDAR on scene 5…
+Frame di test (lidar): 38
+
+----- LIDAR RESULTS -----
+Accuracy: 1.00
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       1.00      1.00      1.00       415
+      static       1.00      1.00      1.00        38
+  vulnerable       1.00      1.00      1.00       145
+
+    accuracy                           1.00       598
+   macro avg       1.00      1.00      1.00       598
+weighted avg       1.00      1.00      1.00       598
+
+
+============== SCENE 6 ==============
+
+Evaluating RADAR on scene 6…
+Frame di test (radar): 38
+
+----- RADAR RESULTS -----
+Accuracy: 0.74
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       0.95      0.91      0.93       829
+      static       1.00      0.00      0.01       212
+  vulnerable       0.16      1.00      0.28        49
+
+    accuracy                           0.74      1090
+   macro avg       0.71      0.64      0.41      1090
+weighted avg       0.93      0.74      0.72      1090
+
+
+Evaluating LIDAR on scene 6…
+Frame di test (lidar): 38
+
+----- LIDAR RESULTS -----
+Accuracy: 0.81
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       0.95      0.95      0.95      1715
+      static       0.97      0.53      0.69      1019
+  vulnerable       0.27      0.99      0.43       171
+
+    accuracy                           0.81      2905
+   macro avg       0.73      0.83      0.69      2905
+weighted avg       0.92      0.81      0.83      2905
+
+
+============== SCENE 7 ==============
+
+Evaluating RADAR on scene 7…
+Frame di test (radar): 38
+
+----- RADAR RESULTS -----
+Accuracy: 0.85
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       0.98      0.96      0.97       840
+      static       0.00      0.00      0.00       130
+  vulnerable       0.43      1.00      0.61       113
+
+    accuracy                           0.85      1083
+   macro avg       0.47      0.65      0.53      1083
+weighted avg       0.81      0.85      0.82      1083
+
+
+Evaluating LIDAR on scene 7…
+Frame di test (lidar): 38
+
+----- LIDAR RESULTS -----
+Accuracy: 0.84
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       0.99      0.96      0.98      1257
+      static       1.00      0.41      0.59       480
+  vulnerable       0.48      0.99      0.64       294
+
+    accuracy                           0.84      2031
+   macro avg       0.82      0.79      0.74      2031
+weighted avg       0.92      0.84      0.84      2031
+
+
+============== SCENE 8 ==============
+
+Evaluating RADAR on scene 8…
+Frame di test (radar): 38
+
+----- RADAR RESULTS -----
+Accuracy: 0.96
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       0.98      0.99      0.99      1014
+      static       0.00      0.00      0.00        32
+  vulnerable       0.00      0.00      0.00         0
+
+    accuracy                           0.96      1046
+   macro avg       0.33      0.33      0.33      1046
+weighted avg       0.95      0.96      0.96      1046
+
+
+Evaluating LIDAR on scene 8…
+Frame di test (lidar): 38
+
+----- LIDAR RESULTS -----
+Accuracy: 0.93
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       0.98      1.00      0.99      1575
+      static       1.00      0.46      0.63       212
+  vulnerable       0.00      0.00      0.00         0
+
+    accuracy                           0.93      1787
+   macro avg       0.66      0.49      0.54      1787
+weighted avg       0.98      0.93      0.95      1787
+
+
+============== SCENE 9 ==============
+
+Evaluating RADAR on scene 9…
+Frame di test (radar): 38
+
+----- RADAR RESULTS -----
+Accuracy: 0.69
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       0.81      0.97      0.88       992
+      static       0.00      0.00      0.00       416
+  vulnerable       0.09      1.00      0.17        21
+
+    accuracy                           0.69      1429
+   macro avg       0.30      0.66      0.35      1429
+weighted avg       0.56      0.69      0.62      1429
+
+
+Evaluating LIDAR on scene 9…
+Frame di test (lidar): 38
+
+----- LIDAR RESULTS -----
+Accuracy: 0.75
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       0.84      1.00      0.91      1651
+      static       1.00      0.45      0.62      1426
+  vulnerable       0.13      1.00      0.22        67
+
+    accuracy                           0.75      3144
+   macro avg       0.65      0.82      0.58      3144
+weighted avg       0.89      0.75      0.76      3144
+
+
+======== SUMMARY =========
+Scene 0 | radar → Acc: 0.97 | Time: 2.9s
+Predicted distribution:
+  vulnerable: 80
+  dynamic: 828
+Scene 0 | lidar → Acc: 0.99 | Time: 26.4s
+Predicted distribution:
+  dynamic: 1032
+  vulnerable: 123
+Scene 1 | radar → Acc: 0.81 | Time: 2.2s
+Predicted distribution:
+  dynamic: 319
+  vulnerable: 27
+  static: 1
+Scene 1 | lidar → Acc: 0.72 | Time: 3.5s
+Predicted distribution:
+  static: 55
+  dynamic: 613
+  vulnerable: 77
+Scene 2 | radar → Acc: 0.70 | Time: 2.4s
+Predicted distribution:
+  dynamic: 593
+  vulnerable: 339
+  static: 1
+Scene 2 | lidar → Acc: 0.89 | Time: 9.0s
+Predicted distribution:
+  dynamic: 1540
+  vulnerable: 641
+  static: 1155
+Scene 3 | radar → Acc: 0.91 | Time: 2.2s
+Predicted distribution:
+  dynamic: 573
+  vulnerable: 21
+Scene 3 | lidar → Acc: 0.84 | Time: 5.7s
+Predicted distribution:
+  dynamic: 808
+  vulnerable: 82
+  static: 12
+Scene 4 | radar → Acc: 0.84 | Time: 2.3s
+Predicted distribution:
+  dynamic: 885
+  vulnerable: 123
+  static: 1
+Scene 4 | lidar → Acc: 0.66 | Time: 10.1s
+Predicted distribution:
+  vulnerable: 624
+  dynamic: 1306
+  static: 191
+Scene 5 | radar → Acc: 1.00 | Time: 0.8s
+Predicted distribution:
+  dynamic: 283
+  vulnerable: 37
+  static: 1
+Scene 5 | lidar → Acc: 1.00 | Time: 92.0s
+Predicted distribution:
+  vulnerable: 145
+  dynamic: 415
+  static: 38
+Scene 6 | radar → Acc: 0.74 | Time: 1.9s
+Predicted distribution:
+  vulnerable: 298
+  dynamic: 791
+  static: 1
+Scene 6 | lidar → Acc: 0.81 | Time: 8.0s
+Predicted distribution:
+  dynamic: 1717
+  vulnerable: 627
+  static: 561
+Scene 7 | radar → Acc: 0.85 | Time: 1.7s
+Predicted distribution:
+  vulnerable: 260
+  dynamic: 823
+Scene 7 | lidar → Acc: 0.84 | Time: 18.7s
+Predicted distribution:
+  vulnerable: 612
+  dynamic: 1220
+  static: 199
+Scene 8 | radar → Acc: 0.96 | Time: 1.9s
+Predicted distribution:
+  dynamic: 1023
+  vulnerable: 23
+Scene 8 | lidar → Acc: 0.93 | Time: 9.5s
+Predicted distribution:
+  dynamic: 1602
+  static: 97
+  vulnerable: 88
+Scene 9 | radar → Acc: 0.69 | Time: 2.1s
+Predicted distribution:
+  dynamic: 1196
+  vulnerable: 233
+Scene 9 | lidar → Acc: 0.75 | Time: 20.2s
+Predicted distribution:
+  dynamic: 1976
+  vulnerable: 531
+  static: 637
+
+Done.
