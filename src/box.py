@@ -5,7 +5,7 @@ import json
 # PARAMETRI GLOBALI
 MOTION_THRESHOLD = 0.01  # [m/s] sotto il quale considero l’oggetto “fermo”
 
-# MAPPING LABEL
+# MAPPATURA DA ETICHETTE DATASET A ETICHETTE PER CLASSIFICATORE
 ROOT_TO_CLASS = {
     'vehicle'        : 'dynamic',
     'ego_vehicle'    : 'dynamic',
@@ -16,8 +16,8 @@ ROOT_TO_CLASS = {
 }
 
 def map_label_category(label: str) -> str:
-    """Converte il label MAN TruckScenes in una delle 5 macro-categorie usate nel random forest"""
-    root = label.split('.')[0]  # 'vehicle.car' → 'vehicle'
+    """Converte il label MAN TruckScenes in una delle 5 macro-categorie per la mappatura"""
+    root = label.split('.')[0]  # Ad esempio vehicle.car -> vehicle
     return ROOT_TO_CLASS.get(root, 'unknown')
 
 class Box:
@@ -29,9 +29,9 @@ class Box:
         assert(label_box=='radar' or label_box=='lidar')
         self.label_box = label_box
 
-        # posizione, dimensioni, orientamento
+        # posizione, dimensioni, orientamento (tramite quaternioni)
         self.center = np.asarray(center, dtype=np.float32)
-        self.size   = np.asarray(size,   dtype=np.float32)          # w, l, h
+        self.size   = np.asarray(size,   dtype=np.float32)
         w, x, y, z  = quaternion
         self.rotation      = R.from_quat([x, y, z, w])
         self.inv_rotation  = self.rotation.inv()
@@ -44,9 +44,10 @@ class Box:
         self.elongation_ratio = float(self.size.max() / self.size.min())
 
         self.points_arr = []        # lista di punti completi (x,y,z,...) radar o lidar
+        # caratteristiche aggiuntive di un punto radar rispetto al lidar
         if label_box=='radar':
-            self.rcs_values = []
-            self.velocities = []        # vettori velocità (vx,vy,vz)
+            self.rcs_values = []        # riflettività
+            self.velocities = []        # vettore velocità (vx,vy,vz)
 
     def contains(self, point_xyz: np.ndarray) -> bool:
         """True se il punto (x,y,z) cade dentro la box (correttamente 
@@ -68,6 +69,8 @@ class Box:
         return self.label
 
     def get_features_arr(self):
+        """Funzione per ottenere l'array di features della box (alcune già
+        calcolate altre da calcolare). Il lidar dispone di meno features."""
         # Altezza fisica della bounding box
         height = self.size[2]
 

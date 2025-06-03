@@ -1,0 +1,50 @@
+======
+Loading truckscenes tables for version v1.0-test...
+11 attribute,
+18 calibrated_sensor,
+27 category,
+299097 ego_motion_cabin,
+299084 ego_motion_chassis,
+299537 ego_pose,
+0 instance,
+5960 sample,
+0 sample_annotation,
+645747 sample_data,
+149 scene,
+18 sensor,
+4 visibility,
+Done loading in 3.183 seconds.
+======
+Reverse indexing ...
+Done reverse indexing in 1.2 seconds.
+======
+
+--- ALLENAMENTO CLASSIFICATORI ---
+Frame usati per il training (radar): 36
+Elaborazione frame radar: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 36/36 [00:01<00:00, 24.92it/s]
+Traceback (most recent call last):
+  File "/home/marco/Documents/TAV project/TruckScenes_proj/src/main.py", line 132, in <module>
+    main()
+  File "/home/marco/Documents/TAV project/TruckScenes_proj/src/main.py", line 73, in main
+    clf_radar = dtan.train_classifier(trucksc, first_train_token, dir_path, test_size_par=train_pct, sensor_type_par='radar')
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marco/Documents/TAV project/TruckScenes_proj/src/data_analyzer.py", line 182, in train_classifier
+    clf.fit(X_train, y_train)
+  File "/home/marco/venv/lib/python3.12/site-packages/sklearn/base.py", line 1389, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marco/venv/lib/python3.12/site-packages/sklearn/ensemble/_forest.py", line 360, in fit
+    X, y = validate_data(
+           ^^^^^^^^^^^^^^
+  File "/home/marco/venv/lib/python3.12/site-packages/sklearn/utils/validation.py", line 2961, in validate_data
+    X, y = check_X_y(X, y, **check_params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/marco/venv/lib/python3.12/site-packages/sklearn/utils/validation.py", line 1370, in check_X_y
+    X = check_array(
+        ^^^^^^^^^^^^
+  File "/home/marco/venv/lib/python3.12/site-packages/sklearn/utils/validation.py", line 1093, in check_array
+    raise ValueError(msg)
+ValueError: Expected 2D array, got 1D array instead:
+array=[].
+Reshape your data either using array.reshape(-1, 1) if your data has a single feature or array.reshape(1, -1) if it contains a single sample.
+(venv) marco@marco-thingf6312udx:~/Desktop/TAV project/TruckScenes_proj$

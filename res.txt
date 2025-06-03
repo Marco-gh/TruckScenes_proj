@@ -13,7 +13,7 @@ Loading truckscenes tables for version v1.0-mini...
 10 scene,
 18 sensor,
 4 visibility,
-Done loading in 0.320 seconds.
+Done loading in 0.305 seconds.
 ======
 Reverse indexing ...
 Done reverse indexing in 0.1 seconds.
@@ -21,14 +21,17 @@ Done reverse indexing in 0.1 seconds.
 
 --- ALLENAMENTO CLASSIFICATORI ---
 Frame usati per il training (radar): 36
-Training completato in 0.7635445594787598 s
+Elaborazione frame radar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 36/36 [00:00<00:00, 53.00it/s]
+Training completato in 0.7459897994995117 s
 Frame usati per il training (lidar): 36
-Training completato in 83.74262261390686 s
+Elaborazione frame lidar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 36/36 [01:19<00:00,  2.22s/it]
+Training completato in 80.11555409431458 s
 
 ============== SCENE 0 ==============
 
 Evaluating RADAR on scene 0…
 Frame di test (radar): 38
+Elaborazione frame radar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:02<00:00, 14.64it/s]
 
 ----- RADAR RESULTS -----
 Accuracy: 0.97
@@ -45,6 +48,7 @@ weighted avg       0.98      0.97      0.97       908
 
 Evaluating LIDAR on scene 0…
 Frame di test (lidar): 38
+Elaborazione frame lidar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:23<00:00,  1.65it/s]
 
 ----- LIDAR RESULTS -----
 Accuracy: 0.99
@@ -64,6 +68,7 @@ weighted avg       0.98      0.99      0.98      1155
 
 Evaluating RADAR on scene 1…
 Frame di test (radar): 38
+Elaborazione frame radar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:02<00:00, 17.36it/s]
 
 ----- RADAR RESULTS -----
 Accuracy: 0.81
@@ -81,6 +86,7 @@ weighted avg       0.90      0.81      0.77       347
 
 Evaluating LIDAR on scene 1…
 Frame di test (lidar): 38
+Elaborazione frame lidar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:03<00:00, 11.49it/s]
 
 ----- LIDAR RESULTS -----
 Accuracy: 0.72
@@ -100,6 +106,7 @@ weighted avg       0.86      0.72      0.70       745
 
 Evaluating RADAR on scene 2…
 Frame di test (radar): 38
+Elaborazione frame radar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:02<00:00, 16.72it/s]
 
 ----- RADAR RESULTS -----
 Accuracy: 0.70
@@ -117,6 +124,7 @@ weighted avg       0.84      0.70      0.61       933
 
 Evaluating LIDAR on scene 2…
 Frame di test (lidar): 38
+Elaborazione frame lidar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:08<00:00,  4.66it/s]
 
 ----- LIDAR RESULTS -----
 Accuracy: 0.89
@@ -136,6 +144,7 @@ weighted avg       0.93      0.89      0.90      3336
 
 Evaluating RADAR on scene 3…
 Frame di test (radar): 38
+Elaborazione frame radar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:02<00:00, 17.57it/s]
 
 ----- RADAR RESULTS -----
 Accuracy: 0.91
@@ -153,6 +162,7 @@ weighted avg       0.88      0.91      0.89       594
 
 Evaluating LIDAR on scene 3…
 Frame di test (lidar): 38
+Elaborazione frame lidar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:05<00:00,  6.79it/s]
 
 ----- LIDAR RESULTS -----
 Accuracy: 0.84
@@ -173,6 +183,7 @@ weighted avg       0.92      0.84      0.81       902
 
 Evaluating RADAR on scene 4…
 Frame di test (radar): 38
+Elaborazione frame radar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:02<00:00, 16.86it/s]
 
 ----- RADAR RESULTS -----
 Accuracy: 0.84
@@ -191,6 +202,7 @@ weighted avg       0.91      0.84      0.82      1009
 
 Evaluating LIDAR on scene 4…
 Frame di test (lidar): 38
+Elaborazione frame lidar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:09<00:00,  3.85it/s]
 
 ----- LIDAR RESULTS -----
 Accuracy: 0.66
@@ -211,6 +223,7 @@ weighted avg       0.72      0.66      0.66      2121
 
 Evaluating RADAR on scene 5…
 Frame di test (radar): 38
+Elaborazione frame radar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:00<00:00, 47.48it/s]
 
 ----- RADAR RESULTS -----
 Accuracy: 1.00
@@ -228,6 +241,7 @@ weighted avg       1.00      1.00      1.00       321
 
 Evaluating LIDAR on scene 5…
 Frame di test (lidar): 38
+Elaborazione frame lidar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [01:32<00:00,  2.43s/it]
 
 ----- LIDAR RESULTS -----
 Accuracy: 1.00
@@ -247,6 +261,7 @@ weighted avg       1.00      1.00      1.00       598
 
 Evaluating RADAR on scene 6…
 Frame di test (radar): 38
+Elaborazione frame radar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:01<00:00, 19.30it/s]
 
 ----- RADAR RESULTS -----
 Accuracy: 0.74
@@ -264,6 +279,7 @@ weighted avg       0.93      0.74      0.72      1090
 
 Evaluating LIDAR on scene 6…
 Frame di test (lidar): 38
+Elaborazione frame lidar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:07<00:00,  4.81it/s]
 
 ----- LIDAR RESULTS -----
 Accuracy: 0.81
@@ -283,6 +299,7 @@ weighted avg       0.92      0.81      0.83      2905
 
 Evaluating RADAR on scene 7…
 Frame di test (radar): 38
+Elaborazione frame radar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:01<00:00, 21.54it/s]
 
 ----- RADAR RESULTS -----
 Accuracy: 0.85
@@ -300,6 +317,7 @@ weighted avg       0.81      0.85      0.82      1083
 
 Evaluating LIDAR on scene 7…
 Frame di test (lidar): 38
+Elaborazione frame lidar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:18<00:00,  2.07it/s]
 
 ----- LIDAR RESULTS -----
 Accuracy: 0.84
@@ -319,6 +337,7 @@ weighted avg       0.92      0.84      0.84      2031
 
 Evaluating RADAR on scene 8…
 Frame di test (radar): 38
+Elaborazione frame radar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:01<00:00, 19.75it/s]
 
 ----- RADAR RESULTS -----
 Accuracy: 0.96
@@ -336,6 +355,7 @@ weighted avg       0.95      0.96      0.96      1046
 
 Evaluating LIDAR on scene 8…
 Frame di test (lidar): 38
+Elaborazione frame lidar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:09<00:00,  4.03it/s]
 
 ----- LIDAR RESULTS -----
 Accuracy: 0.93
@@ -355,6 +375,7 @@ weighted avg       0.98      0.93      0.95      1787
 
 Evaluating RADAR on scene 9…
 Frame di test (radar): 38
+Elaborazione frame radar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:02<00:00, 17.87it/s]
 
 ----- RADAR RESULTS -----
 Accuracy: 0.69
@@ -372,6 +393,7 @@ weighted avg       0.56      0.69      0.62      1429
 
 Evaluating LIDAR on scene 9…
 Frame di test (lidar): 38
+Elaborazione frame lidar: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 38/38 [00:19<00:00,  1.93it/s]
 
 ----- LIDAR RESULTS -----
 Accuracy: 0.75
@@ -388,11 +410,11 @@ weighted avg       0.89      0.75      0.76      3144
 
 
 ======== SUMMARY =========
-Scene 0 | radar → Acc: 0.97 | Time: 2.9s
+Scene 0 | radar → Acc: 0.97 | Time: 2.6s
 Predicted distribution:
   vulnerable: 80
   dynamic: 828
-Scene 0 | lidar → Acc: 0.99 | Time: 26.4s
+Scene 0 | lidar → Acc: 0.99 | Time: 23.2s
 Predicted distribution:
   dynamic: 1032
   vulnerable: 123
@@ -401,17 +423,17 @@ Predicted distribution:
   dynamic: 319
   vulnerable: 27
   static: 1
-Scene 1 | lidar → Acc: 0.72 | Time: 3.5s
+Scene 1 | lidar → Acc: 0.72 | Time: 3.3s
 Predicted distribution:
   static: 55
   dynamic: 613
   vulnerable: 77
-Scene 2 | radar → Acc: 0.70 | Time: 2.4s
+Scene 2 | radar → Acc: 0.70 | Time: 2.3s
 Predicted distribution:
   dynamic: 593
   vulnerable: 339
   static: 1
-Scene 2 | lidar → Acc: 0.89 | Time: 9.0s
+Scene 2 | lidar → Acc: 0.89 | Time: 8.3s
 Predicted distribution:
   dynamic: 1540
   vulnerable: 641
@@ -420,7 +442,7 @@ Scene 3 | radar → Acc: 0.91 | Time: 2.2s
 Predicted distribution:
   dynamic: 573
   vulnerable: 21
-Scene 3 | lidar → Acc: 0.84 | Time: 5.7s
+Scene 3 | lidar → Acc: 0.84 | Time: 5.6s
 Predicted distribution:
   dynamic: 808
   vulnerable: 82
@@ -430,7 +452,7 @@ Predicted distribution:
   dynamic: 885
   vulnerable: 123
   static: 1
-Scene 4 | lidar → Acc: 0.66 | Time: 10.1s
+Scene 4 | lidar → Acc: 0.66 | Time: 10.0s
 Predicted distribution:
   vulnerable: 624
   dynamic: 1306
@@ -440,12 +462,12 @@ Predicted distribution:
   dynamic: 283
   vulnerable: 37
   static: 1
-Scene 5 | lidar → Acc: 1.00 | Time: 92.0s
+Scene 5 | lidar → Acc: 1.00 | Time: 92.5s
 Predicted distribution:
   vulnerable: 145
   dynamic: 415
   static: 38
-Scene 6 | radar → Acc: 0.74 | Time: 1.9s
+Scene 6 | radar → Acc: 0.74 | Time: 2.0s
 Predicted distribution:
   vulnerable: 298
   dynamic: 791
@@ -455,16 +477,16 @@ Predicted distribution:
   dynamic: 1717
   vulnerable: 627
   static: 561
-Scene 7 | radar → Acc: 0.85 | Time: 1.7s
+Scene 7 | radar → Acc: 0.85 | Time: 1.8s
 Predicted distribution:
   vulnerable: 260
   dynamic: 823
-Scene 7 | lidar → Acc: 0.84 | Time: 18.7s
+Scene 7 | lidar → Acc: 0.84 | Time: 18.5s
 Predicted distribution:
   vulnerable: 612
   dynamic: 1220
   static: 199
-Scene 8 | radar → Acc: 0.96 | Time: 1.9s
+Scene 8 | radar → Acc: 0.96 | Time: 2.0s
 Predicted distribution:
   dynamic: 1023
   vulnerable: 23
@@ -473,14 +495,54 @@ Predicted distribution:
   dynamic: 1602
   static: 97
   vulnerable: 88
-Scene 9 | radar → Acc: 0.69 | Time: 2.1s
+Scene 9 | radar → Acc: 0.69 | Time: 2.2s
 Predicted distribution:
   dynamic: 1196
   vulnerable: 233
-Scene 9 | lidar → Acc: 0.75 | Time: 20.2s
+Scene 9 | lidar → Acc: 0.75 | Time: 19.9s
 Predicted distribution:
   dynamic: 1976
   vulnerable: 531
   static: 637
+
+==== METRICHE GLOBALI (RADAR) ====
+Accuracy complessiva: 0.83
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       0.93      0.97      0.95      7050
+     movable       0.00      0.00      0.00        51
+      static       1.00      0.00      0.01      1247
+  vulnerable       0.29      1.00      0.44       412
+
+    accuracy                           0.83      8760
+   macro avg       0.55      0.49      0.35      8760
+weighted avg       0.91      0.83      0.79      8760
+
+Confusion Matrix:
+[[6822    0    0  228]
+ [   0    0    0   51]
+ [ 492    0    5  750]
+ [   0    0    0  412]]
+
+==== METRICHE GLOBALI (LIDAR) ====
+Accuracy complessiva: 0.83
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       0.93      0.98      0.96     11549
+     movable       0.00      0.00      0.00       510
+      static       0.99      0.53      0.69      5488
+  vulnerable       0.33      1.00      0.50      1177
+
+    accuracy                           0.83     18724
+   macro avg       0.56      0.63      0.54     18724
+weighted avg       0.89      0.83      0.82     18724
+
+Confusion Matrix:
+[[11375     0    16   158]
+ [    8     0     0   502]
+ [  842     0  2929  1717]
+ [    4     0     0  1173]]
 
 Done.
