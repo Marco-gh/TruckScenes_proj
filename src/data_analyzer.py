@@ -1,7 +1,6 @@
 from time import time
 from typing import List, Tuple
 import os
-import gc
 
 import numpy as np
 from tqdm import tqdm
@@ -16,6 +15,8 @@ from box import Box
 from scipy.spatial import cKDTree
 
 from itertools import chain
+
+from scipy.spatial import cKDTree
 
 # -----------------------------------------------------------------------------
 # Configurazioni
@@ -85,6 +86,13 @@ def _load_sensor_points(trucksc, sample, dir_path: str, sensor_labels: List[str]
 
         # In caso di Lidar sottocampioniamo (per evitare di far esplodere la ram senza perdere troppa informazione)
         if slice_len == 3:
+            
+            # Filtriamo i punti prima di campionarli
+            #tree = cKDTree(arr) # Creazione di un kdtree
+            #counts = tree.query_ball_point(arr, r=0.25, return_length=True) # Filtriamo i punti con almeno 2 vicini in un raggio di 0.25
+            #mask = counts > 2 # Creazione maschera booleana
+            #arr[mask] # Applicazione maschera
+            
             #print(f"Numero punti lidar da sottocampionare: {len(arr)}")
             if arr.shape[0] > 10000:
                 idx = np.random.choice(arr.shape[0], 5000, replace=False)  # Prendiamo 5000 punti invece dei ~80000 del lidar
