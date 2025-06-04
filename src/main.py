@@ -31,14 +31,14 @@ def _print_report(y_true, y_pred, labels: list, sensor: str):
 # -----------------------------------------------------------------------------
 
 def evaluate_scene(trucksc: TruckScenes, scene_idx: int, dir_path: str,
-                   clf_radar, clf_lidar, test_size: float = 0.95) -> Dict[str, Tuple]:
+                   clf_radar, clf_lidar, test_size) -> Dict[str, Tuple]:
     """Esegue valutazione radar & lidar su una singola scena e ritorna i risultati."""
     first_token = trucksc.scene[scene_idx]['first_sample_token']
 
     results = {}
     for sensor, clf in [('radar', clf_radar), ('lidar', clf_lidar)]:
         print(f"\nEvaluating {sensor.upper()} on scene {scene_idx}…")
-        X, y_true, y_pred, exec_time, labels = dtan.test_classifier(trucksc, first_token, dir_path, clf, test_size_par=test_size, sensor_type_par=sensor)
+        X, y_true, y_pred, exec_time, labels = dtan.test_classifier(trucksc, first_token, dir_path, clf, test_size=test_size, sensor_type_par=sensor)
         _print_report(y_true, y_pred, labels, sensor)
         results[sensor] = (y_true, y_pred)
     return results
@@ -57,15 +57,15 @@ def main():
     train_pct = 1.0
 
     # 76 scene nel primo dataset scaricato (train dataset), scegliamo casualmente 61 scene per il training (80%)
-    train_scenes = [random.randint(0, 76) for _ in range(61)]
+    train_scenes = random.sample(range(77), 61)
     test_scenes = []
-    for i in range(61):
+    for i in range(77):
         if i not in  train_scenes:
             test_scenes.append(i)
 
     # Raccolta dei primi frame delle scene
     first_train_token_arr = []
-    for idx in range(len(train_scenes)):
+    for idx in train_scenes:
         first_train_token_arr.append(trucksc.scene[idx]['first_sample_token'])
     
     print("\n--- ALLENAMENTO CLASSIFICATORI ---")
@@ -79,7 +79,7 @@ def main():
     # Test sul 20% delle scene
     for idx in test_scenes:
         print(f"\n============== SCENE {idx} ==============")
-        scene_results = evaluate_scene(trucksc, idx, dir_path, clf_radar, clf_lidar, test_size=0.95)
+        scene_results = evaluate_scene(trucksc, idx, dir_path, clf_radar, clf_lidar, test_size=None)
         for sensor, (y_true, y_pred) in scene_results.items():
             # Aggrega per metriche globali (radar + lidar)
             if sensor == 'radar':

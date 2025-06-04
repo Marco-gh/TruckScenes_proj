@@ -1,6 +1,7 @@
 from time import time
 from typing import List, Tuple
 import os
+import gc
 
 import numpy as np
 from tqdm import tqdm
@@ -82,8 +83,13 @@ def _load_sensor_points(trucksc, sample, dir_path: str, sensor_labels: List[str]
         pc = PointCloud.from_path(full_path)
         arr = pc.numpy()
 
-        # Un lidar ha 80000 punti
-        #print(f"LASEDEEEEE: {print(arr.shape[0])}, {sensor_labels}, {slice_len}")
+        # In caso di Lidar sottocampioniamo (per evitare di far esplodere la ram senza perdere troppa informazione)
+        if slice_len == 3:
+            #print(f"Numero punti lidar da sottocampionare: {len(arr)}")
+            if arr.shape[0] > 10000:
+                idx = np.random.choice(arr.shape[0], 5000, replace=False)  # Prendiamo 5000 punti invece dei ~80000 del lidar
+                arr = arr[idx]
+                #print(f"Numero punti lidar sottocampionato: {len(arr)}")
         
         if arr.size == 0:
             continue
@@ -111,7 +117,7 @@ def _load_sensor_points(trucksc, sample, dir_path: str, sensor_labels: List[str]
     return sensor_points
 
 def _build_boxes_for_sample(trucksc, sample, unified_points: np.ndarray, label_box: str) -> List[Box]:
-    """Associa i punti del sample alle ann bbox e restituisce Box popolati."""
+    """Associa i punti del sample alle ann box e restituisce Box popolate"""
     boxes = []
     point_mask = np.full(unified_points.shape[0], False)
 
@@ -139,13 +145,15 @@ def _build_boxes_for_sample(trucksc, sample, unified_points: np.ndarray, label_b
     return boxes
 
 
-def _process_frames(trucksc, tokens: List[str], dir_path: str, sensor_type: str) -> List[Box]:
-    """Estrae le Box da tutti i frame indicati per il tipo di sensore richiesto."""
+def _process_frames(trucksc, tokens: List[str], dir_path: str, sensor_type: str):
+    """Estrae le feature delle box popolate con i punti di tutti i frame passati"""
     meta = SENSOR_META[sensor_type]
     sensor_labels = meta['labels']
     slice_len = meta['slice_len']
 
-    all_boxes = []
+    X_res = []
+    y_res = []
+
     for token in tqdm(tokens, desc=f"Elaborazione frame {sensor_type}"):
         sample = trucksc.get('sample', token)
         sensor_pts = _load_sensor_points(trucksc, sample, dir_path, sensor_labels, slice_len)
@@ -153,8 +161,16 @@ def _process_frames(trucksc, tokens: List[str], dir_path: str, sensor_type: str)
             continue
         unified = np.concatenate(sensor_pts, axis=0)
         boxes = _build_boxes_for_sample(trucksc, sample, unified, label_box=sensor_type)
-        all_boxes.extend(boxes)
-    return all_boxes
+
+        for b in boxes:
+            X_res.append(b.get_features_arr())
+            y_res.append(b.get_box_label())
+            assert len(X_res) == len(y_res)
+
+        # Forza la rimozione delle box con tutti i punti dentro
+        boxes.clear()
+
+    return X_res, y_res
 
 # -----------------------------------------------------------------------------
 # Funzioni di alto livello
@@ -175,18 +191,22 @@ def train_classifier(
     train_sample_tokens = []
     for first_sample_token in arr_first_sample:
         train_sample_tokens.append(_collect_sample_tokens(trucksc, first_sample_token))
-    print(f"Frame usati per il training ({sensor_type_par}): {len(train_sample_tokens)}")
 
+    print(f"Scene usate per il training ({sensor_type_par}): {len(train_sample_tokens)}")
     # Serve "appiattire" la lista di token, ora una lista di liste
     train_sample_tokens = list(chain.from_iterable(train_sample_tokens))
-    train_boxes = _process_frames(trucksc, train_sample_tokens, dir_path, sensor_type=sensor_type_par)
-    X_train = [b.get_features_arr() for b in train_boxes]
-    y_train = [b.get_box_label() for b in train_boxes]
-    assert len(X_train) == len(y_train)
+    print(f"Frame totali usati per il training ({sensor_type_par}): {len(train_sample_tokens)}")
+
+    
+    X_train, y_train = _process_frames(trucksc, train_sample_tokens, dir_path, sensor_type=sensor_type_par)
 
     clf = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42, class_weight="balanced")
     clf.fit(X_train, y_train)
 
+    # Rimuove dalla ram i vettori di training:
+    X_train.clear()
+    y_train.clear()
+    
     print(f"Training completato in {time() - start} s")
     return clf
 
@@ -196,7 +216,7 @@ def test_classifier(
     first_sample_token: str,
     dir_path: str,
     clf: RandomForestClassifier,
-    test_size_par: float = 0.2,
+    test_size,
     sensor_type_par: str = DEFAULT_SENSOR_TYPE
 ) -> Tuple[List, List, List, float, List[str]]:
     """Valuta il classificatore sul set di test del sensore indicato."""
@@ -204,12 +224,10 @@ def test_classifier(
 
     start = time()
     tokens = _collect_sample_tokens(trucksc, first_sample_token)
-    _, test_tokens = train_test_split(tokens, test_size=test_size_par, random_state=42)
+    _, test_tokens = train_test_split(tokens, test_size=test_size, random_state=42)
     print(f"Frame di test ({sensor_type_par}): {len(test_tokens)}")
 
-    test_boxes = _process_frames(trucksc, test_tokens, dir_path, sensor_type=sensor_type_par)
-    X_test = [b.get_features_arr() for b in test_boxes]
-    y_test = [b.get_box_label() for b in test_boxes]
+    X_test, y_test = _process_frames(trucksc, test_tokens, dir_path, sensor_type=sensor_type_par)
     assert len(X_test) == len(y_test)
 
     y_pred = clf.predict(X_test)
