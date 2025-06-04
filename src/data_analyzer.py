@@ -14,6 +14,8 @@ from box import Box
 
 from scipy.spatial import cKDTree
 
+from itertools import chain
+
 # -----------------------------------------------------------------------------
 # Configurazioni
 # -----------------------------------------------------------------------------
@@ -160,20 +162,24 @@ def _process_frames(trucksc, tokens: List[str], dir_path: str, sensor_type: str)
 
 def train_classifier(
     trucksc,
-    first_sample_token: str,
+    arr_first_sample: list[str],
     dir_path: str,
-    test_size_par: float = 0.2,
+    test_size_par: float = 1.0,
     sensor_type_par: str = DEFAULT_SENSOR_TYPE
 ) -> RandomForestClassifier:
     """Addestra un RandomForestClassifier per il sensore indicato (radar/lidar)."""
     assert sensor_type_par in SENSOR_META, f"Sensore non supportato: {sensor_type_par}"
 
     start = time()
-    tokens = _collect_sample_tokens(trucksc, first_sample_token)
-    train_tokens, _ = train_test_split(tokens, test_size=test_size_par, random_state=42)
-    print(f"Frame usati per il training ({sensor_type_par}): {len(train_tokens)}")
 
-    train_boxes = _process_frames(trucksc, train_tokens, dir_path, sensor_type=sensor_type_par)
+    train_sample_tokens = []
+    for first_sample_token in arr_first_sample:
+        train_sample_tokens.append(_collect_sample_tokens(trucksc, first_sample_token))
+    print(f"Frame usati per il training ({sensor_type_par}): {len(train_sample_tokens)}")
+
+    # Serve "appiattire" la lista di token, ora una lista di liste
+    train_sample_tokens = list(chain.from_iterable(train_sample_tokens))
+    train_boxes = _process_frames(trucksc, train_sample_tokens, dir_path, sensor_type=sensor_type_par)
     X_train = [b.get_features_arr() for b in train_boxes]
     y_train = [b.get_box_label() for b in train_boxes]
     assert len(X_train) == len(y_train)

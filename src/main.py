@@ -54,23 +54,30 @@ def main():
     trucksc = TruckScenes('v1.0-trainval', dir_path, verbose=True)
 
     # Percentuale frame test per train
-    train_pct = 0.1
+    train_pct = 1.0
 
-    # Scena di riferimento per il training
-    first_train_token = trucksc.scene[2]['first_sample_token']
+    # 76 scene nel primo dataset scaricato (train dataset), scegliamo casualmente 61 scene per il training (80%)
+    train_scenes = [random.randint(0, 76) for _ in range(61)]
+    test_scenes = []
+    for i in range(61):
+        if i not in  train_scenes:
+            test_scenes.append(i)
+
+    # Raccolta dei primi frame delle scene
+    first_train_token_arr = []
+    for idx in range(len(train_scenes)):
+        first_train_token_arr.append(trucksc.scene[idx]['first_sample_token'])
+    
     print("\n--- ALLENAMENTO CLASSIFICATORI ---")
-    clf_radar = dtan.train_classifier(trucksc, first_train_token, dir_path, test_size_par=train_pct, sensor_type_par='radar')
-    clf_lidar = dtan.train_classifier(trucksc, first_train_token, dir_path, test_size_par=train_pct, sensor_type_par='lidar')
+    clf_radar = dtan.train_classifier(trucksc, first_train_token_arr, dir_path, test_size_par=train_pct, sensor_type_par='radar')
+    clf_lidar = dtan.train_classifier(trucksc, first_train_token_arr, dir_path, test_size_par=train_pct, sensor_type_par='lidar')
 
     # Per valutazione aggregata di tutte le scene prese in considerazione
     aggregate_true_radar, aggregate_pred_radar = [], []
     aggregate_true_lidar, aggregate_pred_lidar = [], []
 
-    # 76 scene nel primo dataset scaricato (train dataset), scegliamo casualmente 10 scene tra di esse
-    scenes_to_evaluate = [random.randint(0, 76) for _ in range(10)]
-
-    # Analisi scena per scena
-    for idx in scenes_to_evaluate:
+    # Test sul 20% delle scene
+    for idx in test_scenes:
         print(f"\n============== SCENE {idx} ==============")
         scene_results = evaluate_scene(trucksc, idx, dir_path, clf_radar, clf_lidar, test_size=0.95)
         for sensor, (y_true, y_pred) in scene_results.items():
