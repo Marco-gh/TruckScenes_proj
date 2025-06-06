@@ -1,111 +1,133 @@
-import os
-from time import time
-from collections import Counter
-from typing import Dict, Tuple
+import random
+from typing import Dict, List, Tuple
 
-import matplotlib.pyplot as plt
-import seaborn as sns
-import numpy as np
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from tqdm.auto import tqdm
 from truckscenes import TruckScenes
 
-import data_analyzer as dtan  # Modulo con le funzioni train/test astratte
-import random
+import data_analyzer as dtan
 
 # -----------------------------------------------------------------------------
 # Helper di visualizzazione
 # -----------------------------------------------------------------------------
-def _print_report(y_true, y_pred, labels: list, sensor: str):
-    """Stampa accuracy, confusion matrix e classification report per il sensore."""
+
+def _print_report(y_true: List[int], y_pred: List[int], labels: List[str], title: str) -> None:
+    """Stampa accuracy, confusion matrix e classification report in modo compatto."""
     acc = accuracy_score(y_true, y_pred)
-    cm = confusion_matrix(y_true, y_pred, labels=labels)
-    print(f"\n----- {sensor.upper()} RESULTS -----")
+    print(f"\n----- {title.upper()} -----")
     print(f"Accuracy: {acc:.2f}")
     print("Classification Report:")
     print(classification_report(y_true, y_pred, labels=labels, zero_division=0))
+    print("Confusion Matrix:")
+    print(confusion_matrix(y_true, y_pred, labels=labels))
 
+
+# -----------------------------------------------------------------------------
+# Evaluation on a single scene
+# -----------------------------------------------------------------------------
+
+def evaluate_scene(
+    trucksc: TruckScenes,
+    scene_idx: int,
+    dir_path: str,
+    clf_radar: Tuple,
+    clf_lidar: Tuple,
+    test_size: float | None,
+) -> Dict[str, Dict[str, List]]:
+    """Valuta radar & lidar su una singola scena e restituisce i risultati di RFC e GBC."""
+    first_token = trucksc.scene[scene_idx]["first_sample_token"]
+
+    results: Dict[str, Dict[str, List]] = {}
+    for sensor, (rfc, gbc) in [("radar", clf_radar), ("lidar", clf_lidar)]:
+        print(f"\nEvaluating {sensor.upper()} on scene {scene_idx}…")
+
+        (
+            _,
+            y_test,
+            y_pred_rfc,
+            y_pred_gbc,
+            _,
+            label_names,
+        ) = dtan.test_classifier(
+            trucksc,
+            first_token,
+            dir_path,
+            rfc,
+            gbc,
+            test_size=test_size,
+            sensor_type_par=sensor,
+        )
+
+        results[sensor] = {
+            "y_true": y_test,
+            "y_pred_rfc": y_pred_rfc,
+            "y_pred_gbc": y_pred_gbc,
+        }
+
+    return results
 
 
 # -----------------------------------------------------------------------------
 # Main
 # -----------------------------------------------------------------------------
 
-def evaluate_scene(trucksc: TruckScenes, scene_idx: int, dir_path: str,
-                   clf_radar, clf_lidar, test_size) -> Dict[str, Tuple]:
-    """Esegue valutazione radar & lidar su una singola scena e ritorna i risultati."""
-    first_token = trucksc.scene[scene_idx]['first_sample_token']
+def main() -> None:
+    """Train & evaluate Random Forest vs Gradient Boosting on TruckScenes."""
 
-    results = {}
-    for sensor, clf in [('radar', clf_radar), ('lidar', clf_lidar)]:
-        print(f"\nEvaluating {sensor.upper()} on scene {scene_idx}…")
-        X, y_true, y_pred, exec_time, labels = dtan.test_classifier(trucksc, first_token, dir_path, clf, test_size=test_size, sensor_type_par=sensor)
-        _print_report(y_true, y_pred, labels, sensor)
-        results[sensor] = (y_true, y_pred)
-    return results
-
-
-def main():
-    # Per dataset mini
-    #dir_path = "/home/marco/Documents/TAV project/dataset/man-truckscenes/"
-    #trucksc = TruckScenes('v1.0-mini', dir_path, verbose=True)
-
-    # Dataset più completo 
+    # Path al dataset TruckScenes
     dir_path = "/home/marco/Documents/TAV project/dataset/man-truckscenes"
-    trucksc = TruckScenes('v1.0-trainval', dir_path, verbose=True)
+    trucksc = TruckScenes("v1.0-trainval", dir_path, verbose=True)
 
-    # Percentuale frame test per train
-    train_pct = 1.0
-
-    # 76 scene nel primo dataset scaricato (train dataset), scegliamo casualmente 61 scene per il training (80%)
+    # Suddivide le 77 scene in 61 di training (~80 %) e 16 di test
     train_scenes = random.sample(range(77), 61)
-    test_scenes = []
-    for i in range(77):
-        if i not in  train_scenes:
-            test_scenes.append(i)
+    test_scenes = [i for i in range(77) if i not in train_scenes]
 
-    # Raccolta dei primi frame delle scene
-    first_train_token_arr = []
-    for idx in train_scenes:
-        first_train_token_arr.append(trucksc.scene[idx]['first_sample_token'])
-    
+    # Token iniziali delle scene di training
+    first_train_tokens = [trucksc.scene[idx]["first_sample_token"] for idx in train_scenes]
+
     print("\n--- ALLENAMENTO CLASSIFICATORI ---")
-    clf_radar = dtan.train_classifier(trucksc, first_train_token_arr, dir_path, test_size_par=train_pct, sensor_type_par='radar')
-    clf_lidar = dtan.train_classifier(trucksc, first_train_token_arr, dir_path, test_size_par=train_pct, sensor_type_par='lidar')
+    rfc_radar, gbc_radar = dtan.train_classifier(trucksc, first_train_tokens, dir_path, sensor_type_par="radar")
+    rfc_lidar, gbc_lidar = dtan.train_classifier(trucksc, first_train_tokens, dir_path, sensor_type_par="lidar")
 
-    # Per valutazione aggregata di tutte le scene prese in considerazione
-    aggregate_true_radar, aggregate_pred_radar = [], []
-    aggregate_true_lidar, aggregate_pred_lidar = [], []
+    # Contenitori per le metriche aggregate
+    aggregate: Dict[str, Dict[str, List]] = {
+        "radar": {"y_true": [], "rfc": [], "gbc": []},
+        "lidar": {"y_true": [], "rfc": [], "gbc": []},
+    }
 
-    # Test sul 20% delle scene
-    for idx in test_scenes:
-        print(f"\n============== SCENE {idx} ==============")
-        scene_results = evaluate_scene(trucksc, idx, dir_path, clf_radar, clf_lidar, test_size=None)
-        for sensor, (y_true, y_pred) in scene_results.items():
-            # Aggrega per metriche globali (radar + lidar)
-            if sensor == 'radar':
-                aggregate_true_radar.extend(y_true)
-                aggregate_pred_radar.extend(y_pred)
-            elif sensor == 'lidar':
-                aggregate_true_lidar.extend(y_true)
-                aggregate_pred_lidar.extend(y_pred)
-            
-            #break # per valutare una scena sola (debug)
+    # Valutazione su ogni scena di test con progress-bar
+    for idx in tqdm(test_scenes, desc="Testing scenes", unit="scene"):
+        scene_results = evaluate_scene(
+            trucksc,
+            idx,
+            dir_path,
+            (rfc_radar, gbc_radar),
+            (rfc_lidar, gbc_lidar),
+            test_size=None,  # usa tutti i frame della scena come test
+        )
 
-    # Report aggregato globale per radar
-    print("\n==== METRICHE GLOBALI (RADAR) ====")
-    print(f"Accuracy complessiva: {accuracy_score(aggregate_true_radar, aggregate_pred_radar):.2f}")
-    print("Classification Report:")
-    print(classification_report(aggregate_true_radar, aggregate_pred_radar, zero_division=0))
-    print("Confusion Matrix:")
-    print(confusion_matrix(aggregate_true_radar, aggregate_pred_radar))
+        for sensor, res in scene_results.items():
+            aggregate[sensor]["y_true"].extend(res["y_true"])
+            aggregate[sensor]["rfc"].extend(res["y_pred_rfc"])
+            aggregate[sensor]["gbc"].extend(res["y_pred_gbc"])
 
-    # Report aggregato globale per lidar
-    print("\n==== METRICHE GLOBALI (LIDAR) ====")
-    print(f"Accuracy complessiva: {accuracy_score(aggregate_true_lidar, aggregate_pred_lidar):.2f}")
-    print("Classification Report:")
-    print(classification_report(aggregate_true_lidar, aggregate_pred_lidar, zero_division=0))
-    print("Confusion Matrix:")
-    print(confusion_matrix(aggregate_true_lidar, aggregate_pred_lidar))
+    # Report globali
+    for sensor in ["radar", "lidar"]:
+        print(f"\n==== GLOBAL METRICS {sensor.upper()} - RANDOM FOREST ====")
+        _print_report(
+            aggregate[sensor]["y_true"],
+            aggregate[sensor]["rfc"],
+            labels=sorted(set(aggregate[sensor]["y_true"])),
+            title=f"{sensor} - Random Forest",
+        )
+
+        print(f"\n==== GLOBAL METRICS {sensor.upper()} - GRADIENT BOOSTING ====")
+        _print_report(
+            aggregate[sensor]["y_true"],
+            aggregate[sensor]["gbc"],
+            labels=sorted(set(aggregate[sensor]["y_true"])),
+            title=f"{sensor} - Gradient Boosting",
+        )
 
     print("\nDone.")
 
