@@ -1,0 +1,211 @@
+======
+Loading truckscenes tables for version v1.0-trainval...
+11 attribute,
+18 calibrated_sensor,
+27 category,
+1200243 ego_motion_cabin,
+1200183 ego_motion_chassis,
+1201993 ego_pose,
+43769 instance,
+23902 sample,
+819536 sample_annotation,
+2586264 sample_data,
+598 scene,
+18 sensor,
+4 visibility,
+Done loading in 20.632 seconds.
+======
+Reverse indexing ...
+Done reverse indexing in 7.8 seconds.
+======
+
+--- ALLENAMENTO CLASSIFICATORI ---
+Scene usate per il training (radar): 61
+Frame totali usati per il training (radar): 2440
+Scene usate per il training (lidar): 61
+Frame totali usati per il training (lidar): 2440
+Testing scenes:   0%|                                                                                                                                                                   | 0/16 [00:00<?, ?scene/s]
+Evaluating RADAR on scene 1…
+Frame di test (radar): 40
+
+Evaluating LIDAR on scene 1…
+Frame di test (lidar): 40
+Testing scenes:   6%|█████████▋                                                                                                                                                 | 1/16 [00:06<01:43,  6.88s/scene]
+Evaluating RADAR on scene 12…
+Frame di test (radar): 40
+
+Evaluating LIDAR on scene 12…
+Frame di test (lidar): 40
+Testing scenes:  12%|███████████████████▍                                                                                                                                       | 2/16 [00:11<01:14,  5.33s/scene]
+Evaluating RADAR on scene 13…
+Frame di test (radar): 40
+
+Evaluating LIDAR on scene 13…
+Frame di test (lidar): 40
+Testing scenes:  19%|█████████████████████████████                                                                                                                              | 3/16 [00:15<01:01,  4.73s/scene]
+Evaluating RADAR on scene 17…
+Frame di test (radar): 40
+
+Evaluating LIDAR on scene 17…
+Frame di test (lidar): 40
+Testing scenes:  25%|██████████████████████████████████████▊                                                                                                                    | 4/16 [00:19<00:56,  4.68s/scene]
+Evaluating RADAR on scene 20…
+Frame di test (radar): 40
+
+Evaluating LIDAR on scene 20…
+Frame di test (lidar): 40
+Testing scenes:  31%|████████████████████████████████████████████████▍                                                                                                          | 5/16 [00:24<00:49,  4.53s/scene]
+Evaluating RADAR on scene 30…
+Frame di test (radar): 40
+
+Evaluating LIDAR on scene 30…
+Frame di test (lidar): 40
+Testing scenes:  38%|██████████████████████████████████████████████████████████▏                                                                                                | 6/16 [00:28<00:46,  4.60s/scene]
+Evaluating RADAR on scene 39…
+Frame di test (radar): 40
+
+Evaluating LIDAR on scene 39…
+Frame di test (lidar): 40
+Testing scenes:  44%|███████████████████████████████████████████████████████████████████▊                                                                                       | 7/16 [00:32<00:38,  4.30s/scene]
+Evaluating RADAR on scene 40…
+Frame di test (radar): 40
+
+Evaluating LIDAR on scene 40…
+Frame di test (lidar): 40
+Testing scenes:  50%|█████████████████████████████████████████████████████████████████████████████▌                                                                             | 8/16 [00:36<00:33,  4.21s/scene]
+Evaluating RADAR on scene 44…
+Frame di test (radar): 40
+
+Evaluating LIDAR on scene 44…
+Frame di test (lidar): 40
+Testing scenes:  56%|███████████████████████████████████████████████████████████████████████████████████████▏                                                                   | 9/16 [00:44<00:38,  5.54s/scene]
+Evaluating RADAR on scene 47…
+Frame di test (radar): 40
+
+Evaluating LIDAR on scene 47…
+Frame di test (lidar): 40
+Testing scenes:  62%|████████████████████████████████████████████████████████████████████████████████████████████████▎                                                         | 10/16 [00:49<00:30,  5.14s/scene]
+Evaluating RADAR on scene 50…
+Frame di test (radar): 40
+
+Evaluating LIDAR on scene 50…
+Frame di test (lidar): 40
+Testing scenes:  69%|█████████████████████████████████████████████████████████████████████████████████████████████████████████▉                                                | 11/16 [00:53<00:23,  4.79s/scene]
+Evaluating RADAR on scene 53…
+Frame di test (radar): 40
+
+Evaluating LIDAR on scene 53…
+Frame di test (lidar): 40
+Testing scenes:  75%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                                      | 12/16 [00:57<00:18,  4.64s/scene]
+Evaluating RADAR on scene 63…
+Frame di test (radar): 40
+
+Evaluating LIDAR on scene 63…
+Frame di test (lidar): 40
+Testing scenes:  81%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▏                            | 13/16 [01:00<00:12,  4.12s/scene]
+Evaluating RADAR on scene 70…
+Frame di test (radar): 40
+
+Evaluating LIDAR on scene 70…
+Frame di test (lidar): 40
+Testing scenes:  88%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▊                   | 14/16 [01:11<00:12,  6.12s/scene]
+Evaluating RADAR on scene 73…
+Frame di test (radar): 40
+
+Evaluating LIDAR on scene 73…
+Frame di test (lidar): 40
+Testing scenes:  94%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▍         | 15/16 [01:15<00:05,  5.55s/scene]
+Evaluating RADAR on scene 74…
+Frame di test (radar): 40
+
+Evaluating LIDAR on scene 74…
+Frame di test (lidar): 40
+Testing scenes: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 16/16 [01:19<00:00,  4.99s/scene]
+
+==== GLOBAL METRICS RADAR - RANDOM FOREST ====
+
+----- RADAR - RANDOM FOREST -----
+Accuracy: 1.00
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       1.00      1.00      1.00      6041
+     movable       0.29      0.12      0.17        16
+      static       0.99      0.98      0.98       573
+  vulnerable       1.00      0.97      0.99        77
+
+    accuracy                           1.00      6707
+   macro avg       0.82      0.77      0.79      6707
+weighted avg       0.99      1.00      0.99      6707
+
+Confusion Matrix:
+[[6039    0    2    0]
+ [  10    2    4    0]
+ [  10    3  560    0]
+ [   0    2    0   75]]
+
+==== GLOBAL METRICS RADAR - GRADIENT BOOSTING ====
+
+----- RADAR - GRADIENT BOOSTING -----
+Accuracy: 1.00
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       1.00      1.00      1.00      6041
+     movable       0.17      0.12      0.14        16
+      static       0.99      0.99      0.99       573
+  vulnerable       1.00      0.90      0.95        77
+
+    accuracy                           1.00      6707
+   macro avg       0.79      0.75      0.77      6707
+weighted avg       1.00      1.00      1.00      6707
+
+Confusion Matrix:
+[[6041    0    0    0]
+ [   8    2    6    0]
+ [   6    2  565    0]
+ [   0    8    0   69]]
+
+==== GLOBAL METRICS LIDAR - RANDOM FOREST ====
+
+----- LIDAR - RANDOM FOREST -----
+Accuracy: 0.98
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       1.00      1.00      1.00      4981
+     movable       0.06      0.21      0.10        29
+      static       0.99      0.95      0.97      1356
+  vulnerable       0.92      0.68      0.78       144
+
+    accuracy                           0.98      6510
+   macro avg       0.74      0.71      0.71      6510
+weighted avg       0.99      0.98      0.98      6510
+
+Confusion Matrix:
+[[4979    2    0    0]
+ [  14    6    9    0]
+ [  11   44 1293    8]
+ [   0   45    1   98]]
+
+==== GLOBAL METRICS LIDAR - GRADIENT BOOSTING ====
+
+----- LIDAR - GRADIENT BOOSTING -----
+Accuracy: 0.98
+Classification Report:
+              precision    recall  f1-score   support
+
+     dynamic       1.00      1.00      1.00      4981
+     movable       0.05      0.14      0.07        29
+      static       0.99      0.97      0.98      1356
+  vulnerable       1.00      0.62      0.77       144
+
+    accuracy                           0.98      6510
+   macro avg       0.76      0.68      0.71      6510
+weighted avg       0.99      0.98      0.98      6510
+
+Confusion Matrix:
+[[4979    2    0    0]
+ [   9    4   16    0]
+ [  15   20 1321    0]
+ [   0   54    0   90]]
