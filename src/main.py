@@ -8,7 +8,7 @@ from truckscenes import TruckScenes
 import data_analyzer as dtan
 
 # -----------------------------------------------------------------------------
-# Helper di visualizzazione
+# Funzione per visualizzazione
 # -----------------------------------------------------------------------------
 
 def _print_report(y_true: List[int], y_pred: List[int], labels: List[str], title: str) -> None:
@@ -23,7 +23,7 @@ def _print_report(y_true: List[int], y_pred: List[int], labels: List[str], title
 
 
 # -----------------------------------------------------------------------------
-# Evaluation on a single scene
+# Valutazione scena
 # -----------------------------------------------------------------------------
 
 def evaluate_scene(
@@ -41,14 +41,7 @@ def evaluate_scene(
     for sensor, (rfc, gbc) in [("radar", clf_radar), ("lidar", clf_lidar)]:
         print(f"\nEvaluating {sensor.upper()} on scene {scene_idx}…")
 
-        (
-            _,
-            y_test,
-            y_pred_rfc,
-            y_pred_gbc,
-            _,
-            label_names,
-        ) = dtan.test_classifier(
+        (_, y_test, y_pred_rfc, y_pred_gbc, _, label_names,) = dtan.test_classifier(
             trucksc,
             first_token,
             dir_path,
@@ -58,11 +51,10 @@ def evaluate_scene(
             sensor_type_par=sensor,
         )
 
-        results[sensor] = {
-            "y_true": y_test,
-            "y_pred_rfc": y_pred_rfc,
-            "y_pred_gbc": y_pred_gbc,
-        }
+        _print_report(y_test, y_pred_gbc, label_names, sensor)
+        _print_report(y_test, y_pred_rfc, label_names, sensor)
+
+        results[sensor] = {"y_true": y_test, "y_pred_rfc": y_pred_rfc, "y_pred_gbc": y_pred_gbc,}
 
     return results
 
@@ -72,13 +64,11 @@ def evaluate_scene(
 # -----------------------------------------------------------------------------
 
 def main() -> None:
-    """Train & evaluate Random Forest vs Gradient Boosting on TruckScenes."""
-
     # Path al dataset TruckScenes
     dir_path = "/home/marco/Documents/TAV project/dataset/man-truckscenes"
     trucksc = TruckScenes("v1.0-trainval", dir_path, verbose=True)
 
-    # Suddivide le 77 scene in 61 di training (~80 %) e 16 di test
+    # Suddivisione delle 77 scene in 61 di training (~80 %) e 16 di test (~20 %)
     train_scenes = random.sample(range(77), 61)
     test_scenes = [i for i in range(77) if i not in train_scenes]
 
@@ -95,7 +85,7 @@ def main() -> None:
         "lidar": {"y_true": [], "rfc": [], "gbc": []},
     }
 
-    # Valutazione su ogni scena di test con progress-bar
+    # Valutazione su ogni scena di test
     for idx in tqdm(test_scenes, desc="Testing scenes", unit="scene"):
         scene_results = evaluate_scene(
             trucksc,
@@ -103,7 +93,7 @@ def main() -> None:
             dir_path,
             (rfc_radar, gbc_radar),
             (rfc_lidar, gbc_lidar),
-            test_size=None,  # usa tutti i frame della scena come test
+            test_size=None,  # Nessuna divisione tra frame -> usati tutti per il test
         )
 
         for sensor, res in scene_results.items():
@@ -129,7 +119,7 @@ def main() -> None:
             title=f"{sensor} - Gradient Boosting",
         )
 
-    print("\nDone.")
+    print("\nFINE")
 
 
 if __name__ == "__main__":
