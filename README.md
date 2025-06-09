@@ -1,2 +1,2 @@
 # TruckScenes_proj
-Data analysis from sensors
+Analisi di classificatori supervisionati su dati radar e LiDAR nel dataset TruckScenes
