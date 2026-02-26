@@ -22,3 +22,9 @@ pip install -r requirements.txt
 
 python src/run_experiment.py --sensor radar --model rf
 python src/run_experiment.py --sensor lidar --model gbc
+```
+
+## Useful links
+https://brandportal.man/d/QSf8mPdU5Hgj
+https://brandportal.man/d/QSf8mPdU5Hgj/devkit-tutorial#/-/dataset-schema
+https://github.com/TUMFTM/truckscenes-devkit?tab=readme-ov-file
